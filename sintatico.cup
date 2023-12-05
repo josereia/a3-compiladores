@@ -1,15 +1,24 @@
 import java_cup.runtime.*;
 
-terminal PTVIRG, MAIS, MENOS, INTEIRO;
+terminal PTVIRG, MAIS, MENOS, SELECT;
+terminal String LETRA;
 
-non terminal Object expr_list, expr_ptv, expr;
+non terminal Object expr_list, expr_ptv;
+non terminal String expr;
 
 expr_list ::= expr_list expr_ptv
             | expr_ptv;
 			  
-expr_ptv  ::= expr PTVIRG;
 
-expr ::=  INTEIRO MAIS expr    
-     	| INTEIRO MENOS expr  
-    	| INTEIRO;
+expr_ptv  ::= expr:e1 {: System.out.println("="+e1); :} PTVIRG;
+
+expr ::=   SELECT LETRA:l                 {: 
+                                        System.out.print(l);
+                                                                              
+                                     :}
+
+        | LETRA:l                 {: 
+                                        System.out.print(l);
+                                                                              
+                                     :};
 			

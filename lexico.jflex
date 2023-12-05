@@ -8,7 +8,9 @@ import java_cup.runtime.*;
 %cup 
 %class Lexer
 digito  = [0-9] 
-letra   = [A-Za-z] 
+letra   = [A-Za-z]
+
+teste =  {letra} ({letra})* 
 inteiro = {digito} ({digito})* 
 
 novaLinha    = \r | \n | \r\n
@@ -16,11 +18,10 @@ brancos      = [ \t\f] | {novaLinha}
 
 
 %%
-{inteiro} 		{ int aux = Integer.parseInt(yytext());
-                  return new Symbol(Sym.INTEIRO,yyline,yycolumn, Integer.valueOf(aux));
-                }	
 "+"  			{ return new Symbol(Sym.MAIS);}
 "-"  			{ return new Symbol(Sym.MENOS);}
 ";"  			{ return new Symbol(Sym.PTVIRG);}
+"SELECT"  			{ return new Symbol(Sym.SELECT);}
+{teste}        {return new Symbol(Sym.LETRA,yyline,yycolumn,yytext());}
 {brancos}       {}   
 <<EOF>>         { return new Symbol(Sym.EOF,yyline,yycolumn,yytext());}
