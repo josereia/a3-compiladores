@@ -8,7 +8,7 @@ class Driver {
 		try 
 		{
 			InputStreamReader entrada =  new InputStreamReader(System.in);
-			AnalisadorSintatico  p = new AnalisadorSintatico(new Lexer(entrada));
+			Parser  p = new Parser(new Lexer(entrada));
 			Object result = p.parse().value;
 		}
 		catch (Exception e)
