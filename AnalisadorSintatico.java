@@ -27,9 +27,9 @@ public class AnalisadorSintatico extends java_cup.runtime.lr_parser {
   /** Production table. */
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
-    "\000\007\000\002\002\004\000\002\002\004\000\002\002" +
-    "\003\000\002\005\002\000\002\003\005\000\002\004\004" +
-    "\000\002\004\003" });
+    "\000\006\000\002\002\004\000\002\002\004\000\002\002" +
+    "\003\000\002\005\002\000\002\003\005\000\002\004\006" +
+    "" });
 
   /** Access to production table. */
   public short[][] production_table() {return _production_table;}
@@ -37,13 +37,13 @@ public class AnalisadorSintatico extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\013\000\006\007\010\010\004\001\002\000\004\004" +
-    "\ufffb\001\002\000\010\002\uffff\007\uffff\010\uffff\001\002" +
-    "\000\010\002\015\007\010\010\004\001\002\000\004\004" +
-    "\ufffe\001\002\000\004\010\011\001\002\000\004\004\ufffc" +
-    "\001\002\000\004\004\013\001\002\000\010\002\ufffd\007" +
-    "\ufffd\010\ufffd\001\002\000\010\002\001\007\001\010\001" +
-    "\001\002\000\004\002\000\001\002" });
+    "\000\014\000\004\007\007\001\002\000\006\002\uffff\007" +
+    "\uffff\001\002\000\006\002\016\007\007\001\002\000\004" +
+    "\004\ufffe\001\002\000\004\011\010\001\002\000\004\010" +
+    "\011\001\002\000\004\012\012\001\002\000\004\004\ufffc" +
+    "\001\002\000\004\004\014\001\002\000\006\002\ufffd\007" +
+    "\ufffd\001\002\000\006\002\001\007\001\001\002\000\004" +
+    "\002\000\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -51,11 +51,11 @@ public class AnalisadorSintatico extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\013\000\010\002\005\003\004\004\006\001\001\000" +
-    "\002\001\001\000\002\001\001\000\006\003\013\004\006" +
-    "\001\001\000\004\005\011\001\001\000\002\001\001\000" +
+    "\000\014\000\010\002\004\003\003\004\005\001\001\000" +
+    "\002\001\001\000\006\003\014\004\005\001\001\000\004" +
+    "\005\012\001\001\000\002\001\001\000\002\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001\000\002\001\001" });
+    "\001\001\000\002\001\001\000\002\001\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -156,7 +156,7 @@ class CUP$AnalisadorSintatico$actions {
 		int e1left = ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.peek()).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.peek()).right;
 		String e1 = (String)((java_cup.runtime.Symbol) CUP$AnalisadorSintatico$stack.peek()).value;
- System.out.println("="+e1); 
+ 
               CUP$AnalisadorSintatico$result = parser.getSymbolFactory().newSymbol("NT$0",3, ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.peek()), RESULT);
             }
           return CUP$AnalisadorSintatico$result;
@@ -176,32 +176,24 @@ class CUP$AnalisadorSintatico$actions {
           return CUP$AnalisadorSintatico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 5: // expr ::= SELECT LETRA 
+          case 5: // expr ::= SELECT COLUNA FROM TABELA 
             {
               String RESULT =null;
-		int lleft = ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.peek()).left;
-		int lright = ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.peek()).right;
-		String l = (String)((java_cup.runtime.Symbol) CUP$AnalisadorSintatico$stack.peek()).value;
+		int Lleft = ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.elementAt(CUP$AnalisadorSintatico$top-2)).left;
+		int Lright = ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.elementAt(CUP$AnalisadorSintatico$top-2)).right;
+		String L = (String)((java_cup.runtime.Symbol) CUP$AnalisadorSintatico$stack.elementAt(CUP$AnalisadorSintatico$top-2)).value;
+		int Tleft = ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.peek()).left;
+		int Tright = ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.peek()).right;
+		String T = (String)((java_cup.runtime.Symbol) CUP$AnalisadorSintatico$stack.peek()).value;
 		 
-                                        System.out.print(l);
-                                                                              
-                                     
-              CUP$AnalisadorSintatico$result = parser.getSymbolFactory().newSymbol("expr",2, ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.elementAt(CUP$AnalisadorSintatico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.peek()), RESULT);
-            }
-          return CUP$AnalisadorSintatico$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 6: // expr ::= LETRA 
-            {
-              String RESULT =null;
-		int lleft = ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.peek()).left;
-		int lright = ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.peek()).right;
-		String l = (String)((java_cup.runtime.Symbol) CUP$AnalisadorSintatico$stack.peek()).value;
-		 
-                                        System.out.print(l);
-                                                                              
-                                     
-              CUP$AnalisadorSintatico$result = parser.getSymbolFactory().newSymbol("expr",2, ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.peek()), RESULT);
+                                             ValidateColumn validator = new ValidateColumn();
+                                             if (validator.validate(L, T)) {
+                                                System.out.println("Verdadeiro");
+                                             } else {
+                                                System.out.println("O nome da tabela não condiz com a declaração FROM");
+                                             }
+                                          
+              CUP$AnalisadorSintatico$result = parser.getSymbolFactory().newSymbol("expr",2, ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.elementAt(CUP$AnalisadorSintatico$top-3)), ((java_cup.runtime.Symbol)CUP$AnalisadorSintatico$stack.peek()), RESULT);
             }
           return CUP$AnalisadorSintatico$result;
 

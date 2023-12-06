@@ -1,7 +1,7 @@
 import java_cup.runtime.*;
 
-terminal PTVIRG, MAIS, MENOS, SELECT;
-terminal String LETRA;
+terminal PTVIRG, MAIS, MENOS, SELECT, FROM;
+terminal String COLUNA, TABELA;
 
 non terminal Object expr_list, expr_ptv;
 non terminal String expr;
@@ -10,15 +10,14 @@ expr_list ::= expr_list expr_ptv
             | expr_ptv;
 			  
 
-expr_ptv  ::= expr:e1 {: System.out.println("="+e1); :} PTVIRG;
+expr_ptv  ::= expr:e1 {: :} PTVIRG;
 
-expr ::=   SELECT LETRA:l                 {: 
-                                        System.out.print(l);
-                                                                              
-                                     :}
-
-        | LETRA:l                 {: 
-                                        System.out.print(l);
-                                                                              
-                                     :};
+expr ::=   SELECT COLUNA:L FROM TABELA:T  {: 
+                                             ValidateColumn validator = new ValidateColumn();
+                                             if (validator.validate(L, T)) {
+                                                System.out.println("Verdadeiro");
+                                             } else {
+                                                System.out.println("O nome da tabela não condiz com a declaração FROM");
+                                             }
+                                          :};
 			

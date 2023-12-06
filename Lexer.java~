@@ -65,9 +65,10 @@ class Lexer implements java_cup.runtime.Scanner {
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
     "\11\0\1\1\1\2\1\0\1\1\1\3\22\0\1\1"+
-    "\12\0\1\4\1\0\1\5\15\0\1\6\5\0\2\7"+
-    "\1\10\1\7\1\11\6\7\1\12\6\7\1\13\1\14"+
-    "\6\7\6\0\32\7\u0185\0";
+    "\11\0\1\4\1\5\1\0\1\6\1\7\14\0\1\10"+
+    "\5\0\2\11\1\12\1\11\1\13\1\14\5\11\1\15"+
+    "\1\16\1\11\1\17\2\11\1\20\1\21\1\22\6\11"+
+    "\6\0\32\11\u0185\0";
 
   private static int [] zzUnpackcmap_blocks() {
     int [] result = new int[512];
@@ -94,10 +95,11 @@ class Lexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\2\1\1\2\1\3\1\4\6\5\1\6";
+    "\1\0\2\1\1\2\1\3\1\4\1\5\6\6\1\0"+
+    "\2\6\1\2\1\7\2\6\1\10";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[13];
+    int [] result = new int[21];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -122,11 +124,12 @@ class Lexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\15\0\32\0\15\0\15\0\15\0\47\0\64"+
-    "\0\101\0\116\0\133\0\150\0\47";
+    "\0\0\0\23\0\46\0\71\0\23\0\23\0\23\0\71"+
+    "\0\114\0\137\0\162\0\205\0\230\0\253\0\276\0\321"+
+    "\0\253\0\162\0\344\0\367\0\162";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[13];
+    int [] result = new int[21];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -149,13 +152,20 @@ class Lexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_TRANS = zzUnpacktrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\0\2\2\1\3\1\4\1\5\1\6\4\7\1\10"+
-    "\1\7\17\0\1\2\21\0\6\7\7\0\2\7\1\11"+
-    "\3\7\7\0\3\7\1\12\2\7\7\0\2\7\1\13"+
-    "\3\7\7\0\1\7\1\14\4\7\7\0\5\7\1\15";
+    "\1\0\2\2\1\3\1\4\1\5\1\6\1\0\1\7"+
+    "\3\10\1\11\4\10\1\12\1\10\25\0\1\2\24\0"+
+    "\1\13\4\0\12\13\4\0\1\13\4\0\7\13\1\14"+
+    "\2\13\4\0\1\13\4\0\2\13\1\15\7\13\4\0"+
+    "\1\13\2\0\1\16\1\0\12\13\4\0\1\13\2\0"+
+    "\1\16\1\0\6\13\1\17\3\13\4\0\1\13\2\0"+
+    "\1\16\1\0\4\13\1\20\5\13\4\0\1\21\4\0"+
+    "\12\21\4\0\1\13\2\0\1\16\1\0\5\13\1\22"+
+    "\4\13\4\0\1\13\2\0\1\16\1\0\2\13\1\23"+
+    "\7\13\4\0\1\13\2\0\1\16\1\0\1\13\1\24"+
+    "\10\13\4\0\1\13\2\0\1\16\1\0\11\13\1\25";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[117];
+    int [] result = new int[266];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -198,10 +208,10 @@ class Lexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\11\1\1\3\11\7\1";
+    "\1\0\1\11\2\1\3\11\6\1\1\0\7\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[13];
+    int [] result = new int[21];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -652,32 +662,42 @@ class Lexer implements java_cup.runtime.Scanner {
             { 
             }
           // fall through
-          case 7: break;
-          case 2:
-            { return new Symbol(Sym.MAIS);
-            }
-          // fall through
-          case 8: break;
-          case 3:
-            { return new Symbol(Sym.MENOS);
-            }
-          // fall through
           case 9: break;
-          case 4:
-            { return new Symbol(Sym.PTVIRG);
+          case 2:
+            { return new Symbol(Sym.COLUNA,yyline,yycolumn,yytext());
             }
           // fall through
           case 10: break;
-          case 5:
-            { return new Symbol(Sym.LETRA,yyline,yycolumn,yytext());
+          case 3:
+            { return new Symbol(Sym.MAIS);
             }
           // fall through
           case 11: break;
-          case 6:
-            { return new Symbol(Sym.SELECT);
+          case 4:
+            { return new Symbol(Sym.MENOS);
             }
           // fall through
           case 12: break;
+          case 5:
+            { return new Symbol(Sym.PTVIRG);
+            }
+          // fall through
+          case 13: break;
+          case 6:
+            { return new Symbol(Sym.TABELA,yyline,yycolumn,yytext());
+            }
+          // fall through
+          case 14: break;
+          case 7:
+            { return new Symbol(Sym.FROM);
+            }
+          // fall through
+          case 15: break;
+          case 8:
+            { return new Symbol(Sym.SELECT);
+            }
+          // fall through
+          case 16: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

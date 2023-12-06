@@ -7,11 +7,9 @@ import java_cup.runtime.*;
 %notunix
 %cup 
 %class Lexer
-digito  = [0-9] 
-letra   = [A-Za-z]
-
-teste =  {letra} ({letra})* 
-inteiro = {digito} ({digito})* 
+letras   = [A-Za-z*]
+tabela = {letras} ({letras})*
+coluna = {letras} ({tabela}+\.{letras}+)|\*
 
 novaLinha    = \r | \n | \r\n
 brancos      = [ \t\f] | {novaLinha}
@@ -21,7 +19,9 @@ brancos      = [ \t\f] | {novaLinha}
 "+"  			{ return new Symbol(Sym.MAIS);}
 "-"  			{ return new Symbol(Sym.MENOS);}
 ";"  			{ return new Symbol(Sym.PTVIRG);}
-"SELECT"  			{ return new Symbol(Sym.SELECT);}
-{teste}        {return new Symbol(Sym.LETRA,yyline,yycolumn,yytext());}
-{brancos}       {}   
-<<EOF>>         { return new Symbol(Sym.EOF,yyline,yycolumn,yytext());}
+"SELECT"  { return new Symbol(Sym.SELECT);}
+"FROM"    {return new Symbol(Sym.FROM);}
+{coluna}  {return new Symbol(Sym.COLUNA,yyline,yycolumn,yytext());}
+{tabela}  {return new Symbol(Sym.TABELA,yyline,yycolumn,yytext());}
+{brancos} {}   
+<<EOF>>   { return new Symbol(Sym.EOF,yyline,yycolumn,yytext());}

@@ -1,4 +1,4 @@
-javac -cp .; VerificarPar.java
+javac -cp .; ValidateColumn.java
 
 
 javac -cp .;java-cup-11b-runtime.jar Sym.java
