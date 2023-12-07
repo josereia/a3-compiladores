@@ -1,23 +1,27 @@
 import java_cup.runtime.*;
 
-terminal PTVIRG, MAIS, MENOS, SELECT, FROM;
-terminal String COLUNA, TABELA;
+terminal SEMICOLON, VAR;
+terminal EQUAL, EQUALTO, NOTEQUAL, LESS, LESSEQUAL, GREATER, GREATEREQUAL;
+terminal LEFTPAR, RIGHTPAR, LEFTBRACE, RIGHTBRACE, LEFTBRACKET, RIGHTBRACKET;
+terminal IF, ELSE;
+terminal String IDENTIFIER, STRING;
 
 non terminal Object expr_list, expr_ptv;
-non terminal String expr;
+non terminal String expr, var, operator, condition, if, else, ifelse, elseif;
 
 expr_list ::= expr_list expr_ptv
             | expr_ptv;
 			  
 
-expr_ptv  ::= expr:e1 {: :} PTVIRG;
+expr_ptv ::= expr SEMICOLON | var SEMICOLON | if SEMICOLON | ifelse SEMICOLON | elseif SEMICOLON;
 
-expr ::=   SELECT COLUNA:L FROM TABELA:T  {: 
-                                             ValidateColumn validator = new ValidateColumn();
-                                             if (validator.validate(L, T)) {
-                                                System.out.println("Verdadeiro");
-                                             } else {
-                                                System.out.println("O nome da tabela não condiz com a declaração FROM");
-                                             }
-                                          :};
-			
+var ::= VAR IDENTIFIER:i EQUAL STRING:s;
+
+operator ::= EQUALTO | NOTEQUAL | LESS | LESSEQUAL | GREATER | GREATEREQUAL;
+
+condition ::= IDENTIFIER operator IDENTIFIER;
+
+if ::= IF LEFTPAR condition RIGHTPAR LEFTBRACE expr_list RIGHTBRACE;
+else ::= ELSE LEFTBRACE expr_list RIGHTBRACE;
+ifelse ::= if else;
+elseif ::= if ELSE if | elseif else;
