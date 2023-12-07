@@ -2,9 +2,9 @@ import java_cup.runtime.*;
 
 parser code
 {:
-      public void newError(int line, int column, int text) {
-            Lexer = (Lexer) this.getLexer();
-            newError(line, column, text);
+      public void newError(int line, int column, String text) {
+            Lexer lexer = (Lexer) this.getScanner();
+            lexer.newError(line, column, text);
       }
 :};
 

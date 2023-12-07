@@ -1,5 +1,5 @@
 import java_cup.runtime.*;
-import java.io.*;
+import java.io.FileReader;
 
 public class Driver {
   static public void main(String argv[]) {
