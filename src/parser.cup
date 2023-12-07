@@ -1,10 +1,27 @@
 import java_cup.runtime.*;
 
-terminal SEMICOLON, IDENTIFIER;
+terminal SEMICOLON;
+terminal EQUAL, EQUALTO, LESS, LESSEQUAL, GREATER, GREATEREQUAL, NOTEQUAL;
+terminal LEFTPAR, RIGHTPAR, LEFTBRACE, RIGHTBRACE, LEFTBRACKET, RIGHTBRACKET;
+terminal STRVAR, INTVAR, FUNC;
+terminal IDENTIFIER, STRING, INTEGER, VOID, RETURN;
 
 non terminal Object expr, expr_list, expr_semicolon;
+non terminal Object var, return, func;
 
 expr_list ::= expr_list expr_semicolon
             | expr_semicolon;
 
-expr_semicolon ::= expr SEMICOLON;
+expr_semicolon ::= var SEMICOLON | func SEMICOLON;
+
+var ::= STRVAR IDENTIFIER:i EQUAL STRING
+      | INTVAR IDENTIFIER:i EQUAL INTEGER;
+
+return ::= RETURN IDENTIFIER:i SEMICOLON
+          | RETURN STRING SEMICOLON
+          | RETURN INTEGER SEMICOLON;
+
+func ::= IDENTIFIER:i LEFTPAR RIGHTPAR;
+func ::= VOID func LEFTBRACE expr_list RIGHTBRACE
+        | STRVAR func LEFTBRACE expr_list return RIGHTBRACE
+        | INTVAR func LEFTBRACE expr_list return RIGHTBRACE;
