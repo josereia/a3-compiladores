@@ -1,1 +1,10 @@
 import java_cup.runtime.*;
+
+terminal SEMICOLON, IDENTIFIER;
+
+non terminal Object expr, expr_list, expr_semicolon;
+
+expr_list ::= expr_list expr_semicolon
+            | expr_semicolon;
+
+expr_semicolon ::= expr SEMICOLON;
