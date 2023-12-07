@@ -1,5 +1,13 @@
 import java_cup.runtime.*;
 
+parser code
+{:
+      public void newError(int line, int column, int text) {
+            Lexer = (Lexer) this.getLexer();
+            newError(line, column, text);
+      }
+:};
+
 terminal COLON, SEMICOLON;
 terminal PLUS, MINUS, TIMES, SLASH;
 terminal EQUAL, EQUALTO, LESS, LESSEQUAL, GREATER, GREATEREQUAL, NOTEQUAL;

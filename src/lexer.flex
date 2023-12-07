@@ -1,12 +1,38 @@
 import java_cup.runtime.*;
-//import java_cup.runtime.ComplexSymbolFactory;
-//import java_cup.runtime.ComplexSymbolFactory.Location;
-//import java_cup.runtime.Symbol;
+
 
 %%
-%notunix
 %cup
+%unicode
+%line
+%column
+%public
 %class Lexer
+
+%{
+  private ErrorStack errorStack;
+
+  public Lexer(java.io.FileReader in, ErrorStack errorStack) {
+    this(in);
+    this.errorStack = errorStack;
+  }  
+
+  public ErrorStack getErrorStack() {
+    return errorStack;
+  }
+
+  public void newError(int line, int column, String text) {
+    errorStack.wrap(line, column, text);
+  }
+
+  private Symbol createSym(int code, Object value) {
+    return new Symbol(code, yyline, yycolumn, value);
+  }
+
+  private Symbol createSym(int code) {
+    return new Symbol(code, yyline, yycolumn);
+  }
+%}
 
 // sets
 numbers = [0-9]
@@ -23,42 +49,42 @@ comment = "//".* | "/*"[^*]*|[*]*"*/"
 blanks = [ \t\f] | {newLine} | {comment}
 
 %%
-";"           {return new Symbol(Sym.SEMICOLON);}
-","           {return new Symbol(Sym.COLON);}
+";"           {return createSym(Sym.SEMICOLON);}
+","           {return createSym(Sym.COLON);}
 
-"+"           {return new Symbol(Sym.PLUS);}
-"-"           {return new Symbol(Sym.MINUS);}
-"*"           {return new Symbol(Sym.TIMES);}
-"/"           {return new Symbol(Sym.SLASH);}
+"+"           {return createSym(Sym.PLUS);}
+"-"           {return createSym(Sym.MINUS);}
+"*"           {return createSym(Sym.TIMES);}
+"/"           {return createSym(Sym.SLASH);}
 
-"="           {return new Symbol(Sym.EQUAL);}
-"=="          {return new Symbol(Sym.EQUALTO);}
-"<"           {return new Symbol(Sym.LESS);}
-"<="          {return new Symbol(Sym.LESSEQUAL);}
-">"           {return new Symbol(Sym.GREATER);}
-">="          {return new Symbol(Sym.GREATEREQUAL);}
-"!="          {return new Symbol(Sym.NOTEQUAL);}
+"="           {return createSym(Sym.EQUAL);}
+"=="          {return createSym(Sym.EQUALTO);}
+"<"           {return createSym(Sym.LESS);}
+"<="          {return createSym(Sym.LESSEQUAL);}
+">"           {return createSym(Sym.GREATER);}
+">="          {return createSym(Sym.GREATEREQUAL);}
+"!="          {return createSym(Sym.NOTEQUAL);}
 
-"("           {return new Symbol(Sym.LEFTPAR);}
-")"           {return new Symbol(Sym.RIGHTPAR);}
-"{"           {return new Symbol(Sym.LEFTBRACE);}
-"}"           {return new Symbol(Sym.RIGHTBRACE);}
-"["           {return new Symbol(Sym.LEFTBRACKET);}
-"]"           {return new Symbol(Sym.RIGHTBRACKET);}
+"("           {return createSym(Sym.LEFTPAR);}
+")"           {return createSym(Sym.RIGHTPAR);}
+"{"           {return createSym(Sym.LEFTBRACE);}
+"}"           {return createSym(Sym.RIGHTBRACE);}
+"["           {return createSym(Sym.LEFTBRACKET);}
+"]"           {return createSym(Sym.RIGHTBRACKET);}
 
-"string"      {return new Symbol(Sym.STRVAR);}
-"int"         {return new Symbol(Sym.INTVAR);}
-"func"        {return new Symbol(Sym.FUNC);}
-"void"        {return new Symbol(Sym.VOID);}
-"return"      {return new Symbol(Sym.RETURN);}
+"string"      {return createSym(Sym.STRVAR);}
+"int"         {return createSym(Sym.INTVAR);}
+"func"        {return createSym(Sym.FUNC);}
+"void"        {return createSym(Sym.VOID);}
+"return"      {return createSym(Sym.RETURN);}
 
 {integer}     {
                 int integer = Integer.parseInt(yytext());
-                return new Symbol(Sym.INTEGER, yyline, yycolumn, integer);
+                return createSym(Sym.INTEGER, integer);
               }
               
-{string}      {return new Symbol(Sym.STRING);}
-{identifier}  {return new Symbol(Sym.IDENTIFIER);}
+{string}      {return createSym(Sym.STRING);}
+{identifier}  {return createSym(Sym.IDENTIFIER);}
 
 {blanks}      {}
-<<EOF>>       {return new Symbol(Sym.EOF, yyline, yycolumn, yytext());}
+<<EOF>>       {return createSym(Sym.EOF, yytext());}

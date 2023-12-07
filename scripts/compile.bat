@@ -1,3 +1,8 @@
+javac -cp ./src/errors; ./src/errors/CError.java
+javac -cp ./src/errors; ./src/errors/ErrorStack.java
+
+move ".\src\errors\*.class" ".\build\"
+
 javac -cp ./build;./lib/java-cup-11b-runtime.jar ./build/Sym.java
 
 javac -cp ./build;./lib/java-cup-11b-runtime.jar ./build/Lexer.java
