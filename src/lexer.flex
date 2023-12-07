@@ -24,6 +24,12 @@ blanks = [ \t\f] | {newLine} | {comment}
 
 %%
 ";"           {return new Symbol(Sym.SEMICOLON);}
+","           {return new Symbol(Sym.COLON);}
+
+"+"           {return new Symbol(Sym.PLUS);}
+"-"           {return new Symbol(Sym.MINUS);}
+"*"           {return new Symbol(Sym.TIMES);}
+"/"           {return new Symbol(Sym.SLASH);}
 
 "="           {return new Symbol(Sym.EQUAL);}
 "=="          {return new Symbol(Sym.EQUALTO);}
@@ -46,9 +52,13 @@ blanks = [ \t\f] | {newLine} | {comment}
 "void"        {return new Symbol(Sym.VOID);}
 "return"      {return new Symbol(Sym.RETURN);}
 
-{integer}     {return new Symbol(Sym.INTEGER);}
+{integer}     {
+                int integer = Integer.parseInt(yytext());
+                return new Symbol(Sym.INTEGER, yyline, yycolumn, integer);
+              }
+              
 {string}      {return new Symbol(Sym.STRING);}
 {identifier}  {return new Symbol(Sym.IDENTIFIER);}
 
 {blanks}      {}
-<<EOF>>       {return new Symbol(Sym.EOF,yyline,yycolumn,yytext());}
+<<EOF>>       {return new Symbol(Sym.EOF, yyline, yycolumn, yytext());}

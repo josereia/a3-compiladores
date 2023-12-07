@@ -1,27 +1,40 @@
 import java_cup.runtime.*;
 
-terminal SEMICOLON;
+terminal COLON, SEMICOLON;
+terminal PLUS, MINUS, TIMES, SLASH;
 terminal EQUAL, EQUALTO, LESS, LESSEQUAL, GREATER, GREATEREQUAL, NOTEQUAL;
 terminal LEFTPAR, RIGHTPAR, LEFTBRACE, RIGHTBRACE, LEFTBRACKET, RIGHTBRACKET;
 terminal STRVAR, INTVAR, FUNC;
-terminal IDENTIFIER, STRING, INTEGER, VOID, RETURN;
+terminal VOID, RETURN;
+
+terminal Integer INTEGER;
+terminal String STRING, IDENTIFIER;
 
 non terminal Object expr, expr_list, expr_semicolon;
-non terminal Object var, return, func;
+non terminal Object var, return, args, func;
 
 expr_list ::= expr_list expr_semicolon
             | expr_semicolon;
 
 expr_semicolon ::= var SEMICOLON | func SEMICOLON;
 
+expr ::= INTEGER PLUS expr
+      | INTEGER MINUS expr
+      | INTEGER TIMES expr
+      | INTEGER SLASH expr
+      | INTEGER;
+
 var ::= STRVAR IDENTIFIER:i EQUAL STRING
-      | INTVAR IDENTIFIER:i EQUAL INTEGER;
+      | INTVAR IDENTIFIER:i EQUAL expr
+      | STRVAR IDENTIFIER:i
+      | INTVAR IDENTIFIER:i;
 
 return ::= RETURN IDENTIFIER:i SEMICOLON
-          | RETURN STRING SEMICOLON
-          | RETURN INTEGER SEMICOLON;
+      | RETURN STRING SEMICOLON
+      | RETURN INTEGER SEMICOLON;
 
-func ::= IDENTIFIER:i LEFTPAR RIGHTPAR;
+args ::= LEFTPAR var RIGHTPAR;
+func ::= IDENTIFIER:i args | IDENTIFIER:i LEFTPAR RIGHTPAR;
 func ::= VOID func LEFTBRACE expr_list RIGHTBRACE
-        | STRVAR func LEFTBRACE expr_list return RIGHTBRACE
-        | INTVAR func LEFTBRACE expr_list return RIGHTBRACE;
+      | STRVAR func LEFTBRACE expr_list return RIGHTBRACE
+      | INTVAR func LEFTBRACE expr_list return RIGHTBRACE;
