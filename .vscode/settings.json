@@ -2,6 +2,11 @@
   "cSpell.words": [
     "EQUALTO",
     "GREATEREQUAL",
+    "jcup",
+    "JCUP",
+    "jflex",
+    "JFLEX",
+    "JOLANG",
     "LEFTBRACE",
     "LEFTBRACKET",
     "LEFTPAR",
@@ -11,6 +16,7 @@
     "RIGHTBRACE",
     "RIGHTBRACKET",
     "RIGHTPAR",
+    "Unisociesc",
     "yyline",
     "yytext"
   ]
