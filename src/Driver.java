@@ -6,7 +6,7 @@ public class Driver {
     ErrorStack errorStack = new ErrorStack();
 
     try {
-      Scanner scanner = new Lexer(new FileReader("main.jo"));
+      Scanner scanner = new Lexer(new FileReader("main.jo"), errorStack);
       Parser parser = new Parser(scanner);
       parser.parse();
 

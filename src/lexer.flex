@@ -1,6 +1,5 @@
 import java_cup.runtime.*;
 
-
 %%
 %cup
 %unicode
@@ -15,14 +14,14 @@ import java_cup.runtime.*;
   public Lexer(java.io.FileReader in, ErrorStack errorStack) {
     this(in);
     this.errorStack = errorStack;
-  }  
+  }
 
   public ErrorStack getErrorStack() {
     return errorStack;
   }
 
   public void newError(int line, int column, String text) {
-    errorStack.wrap(line, column, text);
+    this.errorStack.wrap(line, column, text);
   }
 
   private Symbol createSym(int code, Object value) {
@@ -79,11 +78,11 @@ blanks = [ \t\f] | {newLine} | {comment}
 "return"      {return createSym(Sym.RETURN);}
 
 {integer}     {
-                int integer = Integer.parseInt(yytext());
-                return createSym(Sym.INTEGER, integer);
+                int value = Integer.parseInt(yytext());
+                return createSym(Sym.INTEGER, value);
               }
               
-{string}      {return createSym(Sym.STRING);}
+{string}      {return createSym(Sym.STRING, yytext());}
 {identifier}  {return createSym(Sym.IDENTIFIER);}
 
 {blanks}      {}

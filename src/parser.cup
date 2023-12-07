@@ -18,7 +18,8 @@ terminal VOID, RETURN;
 terminal Integer INTEGER;
 terminal String STRING, IDENTIFIER;
 
-non terminal Object expr, expr_list, expr_semicolon;
+non terminal Integer expr, term, factor;
+non terminal Object expr_list, expr_semicolon;
 non terminal Object var, return, args, func;
 
 expr_list ::= expr_list expr_semicolon
@@ -26,11 +27,22 @@ expr_list ::= expr_list expr_semicolon
 
 expr_semicolon ::= var SEMICOLON | func SEMICOLON;
 
-expr ::= INTEGER PLUS expr
-      | INTEGER MINUS expr
-      | INTEGER TIMES expr
-      | INTEGER SLASH expr
-      | INTEGER;
+expr ::= expr PLUS term
+      | expr MINUS term
+      | MINUS term
+      | term;
+
+term ::= factor TIMES term
+      | factor:f SLASH term:t {:
+        if(t == 0) {
+          newError(tleft, tright, "Divisão por zero!");
+        } else {
+          RESULT = f/t;
+        }
+      :}
+      | factor;
+
+factor ::= INTEGER | LEFTPAR expr RIGHTPAR;
 
 var ::= STRVAR IDENTIFIER:i EQUAL STRING
       | INTVAR IDENTIFIER:i EQUAL expr

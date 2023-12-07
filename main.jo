@@ -1,12 +1,11 @@
 string a = "string";
-int b = 1+1;
+int b = 1+8/1;
 
 string aa() {
   string c = "string";
   return c;
 };
 
-string aa(string d) {
+void aa(string d) {
   string e = "string";
-  return e;
 };

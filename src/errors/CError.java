@@ -29,7 +29,7 @@ public class CError {
 
   public void print() {
     String error = text;
-    String info = System.out.printf("Linha: %i e Coluna: %i", this.line, this.column).toString();
+    String info = "Linha: " + (this.line + 1) + "; " + "Coluna: " + this.column;
 
     if (text == null) {
       error = "Erro desconhecido!";
