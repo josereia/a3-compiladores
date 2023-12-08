@@ -29,7 +29,7 @@ public class CError {
 
   public void print() {
     String error = text;
-    String info = "Linha: " + (this.line + 1) + "; " + "Coluna: " + this.column;
+    String info = "Linha: " + (this.line + 1) + ", " + "Coluna: " + this.column;
 
     if (text == null) {
       error = "Erro desconhecido!";
@@ -37,7 +37,7 @@ public class CError {
       error = this.text;
     }
 
-    String mark = "\u001B[31m" + "-> %s | " + "\u001B[0m";
-    System.out.printf(mark + "%s \n", error, info);
+    String mark = "\u001B[31m" + "  -> %s | ";
+    System.out.printf(mark + "%s \n", info, error + "\u001B[0m");
   }
 }
