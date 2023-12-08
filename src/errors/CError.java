@@ -37,6 +37,7 @@ public class CError {
       error = this.text;
     }
 
-    System.out.printf("%s %s", error, info);
+    String mark = "\u001B[31m" + "-> %s | " + "\u001B[0m";
+    System.out.printf(mark + "%s \n", error, info);
   }
 }

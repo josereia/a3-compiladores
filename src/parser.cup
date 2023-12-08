@@ -2,10 +2,10 @@ import java_cup.runtime.*;
 
 parser code
 {:
-      public void newError(int line, int column, String text) {
-            Lexer lexer = (Lexer) this.getScanner();
-            lexer.newError(line, column, text);
-      }
+	public void newError(int line, int column, String text) {
+		Lexer lexer = (Lexer) this.getScanner();
+		lexer.newError(line, column, text);
+	}
 :};
 
 terminal COLON, SEMICOLON;
@@ -23,38 +23,38 @@ non terminal Object expr_list, expr_semicolon;
 non terminal Object var, return, args, func;
 
 expr_list ::= expr_list expr_semicolon
-            | expr_semicolon;
+						| expr_semicolon;
 
-expr_semicolon ::= var SEMICOLON | func SEMICOLON;
+expr_semicolon ::= var:v SEMICOLON {: System.out.println(v); :} | func SEMICOLON;
 
-expr ::= expr PLUS term
-      | expr MINUS term
-      | MINUS term
-      | term;
+expr ::= expr:e PLUS term:t {: RESULT = e+t; :}
+				| expr:e MINUS term:t {: RESULT = e-t; :}
+				| term:t {: RESULT = t; :};
 
-term ::= factor TIMES term
-      | factor:f SLASH term:t {:
-        if(t == 0) {
-          newError(tleft, tright, "Divisão por zero!");
-        } else {
-          RESULT = f/t;
-        }
-      :}
-      | factor;
+term ::= factor:f TIMES term:t {: RESULT = f*t; :}
+				| factor:f SLASH term:t {: 
+					if (t == 0) {
+						newError(tleft, tright, "Divisão por zero");
+					} else {
+						RESULT = f/t;
+					}
+				:}
+				| factor:f {: RESULT = f; :};
 
-factor ::= INTEGER | LEFTPAR expr RIGHTPAR;
+factor ::= INTEGER:i {: RESULT = i; :}
+				| LEFTPAR expr:e RIGHTPAR {: RESULT = e; :};
 
-var ::= STRVAR IDENTIFIER:i EQUAL STRING
-      | INTVAR IDENTIFIER:i EQUAL expr
-      | STRVAR IDENTIFIER:i
-      | INTVAR IDENTIFIER:i;
+var ::= STRVAR IDENTIFIER:i EQUAL STRING:s {: RESULT = s; :}
+			| INTVAR IDENTIFIER:i EQUAL expr:e {: RESULT = e; :}
+			| STRVAR IDENTIFIER:i
+			| INTVAR IDENTIFIER:i;
 
 return ::= RETURN IDENTIFIER:i SEMICOLON
-      | RETURN STRING SEMICOLON
-      | RETURN INTEGER SEMICOLON;
+			| RETURN STRING SEMICOLON
+			| RETURN INTEGER SEMICOLON;
 
 args ::= LEFTPAR var RIGHTPAR;
 func ::= IDENTIFIER:i args | IDENTIFIER:i LEFTPAR RIGHTPAR;
 func ::= VOID func LEFTBRACE expr_list RIGHTBRACE
-      | STRVAR func LEFTBRACE expr_list return RIGHTBRACE
-      | INTVAR func LEFTBRACE expr_list return RIGHTBRACE;
+			| STRVAR func LEFTBRACE expr_list return RIGHTBRACE
+			| INTVAR func LEFTBRACE expr_list return RIGHTBRACE;

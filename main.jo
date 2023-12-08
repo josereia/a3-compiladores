@@ -1,11 +1,11 @@
-string a = "string";
-int b = 1+8/1;
+string a = "a";
+int b = 6/0;
 
 string aa() {
-  string c = "string";
+  string c = "c";
   return c;
 };
 
-void aa(string d) {
-  string e = "string";
+void@ bb(string d) {
+  string e = "e";
 };

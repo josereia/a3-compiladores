@@ -11,7 +11,7 @@ public class Driver {
       parser.parse();
 
       if (errorStack.hasErrors()) {
-        System.out.println("Erros encontrados:");
+        System.out.println("\u001B[1;31m" + "\nPilha de erros:" + "\u001B[0m");
         errorStack.unwrap();
       }
     } catch (Exception e) {

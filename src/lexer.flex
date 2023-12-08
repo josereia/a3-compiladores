@@ -86,4 +86,5 @@ blanks = [ \t\f] | {newLine} | {comment}
 {identifier}  {return createSym(Sym.IDENTIFIER);}
 
 {blanks}      {}
+.|\n          {newError(yyline, yycolumn, "Símbolo desconhecido: " + yytext());}
 <<EOF>>       {return createSym(Sym.EOF, yytext());}
