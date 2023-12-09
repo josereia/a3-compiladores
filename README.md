@@ -82,7 +82,7 @@ A análise semântica está intimamente ligada a etapa anterior pois é com base
 
 Na etapa anterior utilizamos a classe factory para criar as instâncias adequadas para as estruturas gramaticais, como por exemplo, as definições expr, term e factor se válidas instânciam as classes responsáveis por realizar os cálculos matemáticos. Segue na imagem abaixo algumas das classes:
 
-![1702094876577](image/README/1702094876577.png)
+![1702096752782](image/README/1702096752782.png)
 
 ## Objetivo e Demo
 
