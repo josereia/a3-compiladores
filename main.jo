@@ -1,5 +1,5 @@
 string a = "a";
-int b = 6/0;
+int b = 6/2;
 
 string aa() {
   string c = "c";
@@ -9,5 +9,3 @@ string aa() {
 void bb(string d) {
   string e = "e";
 };
-
-print("aaa");
