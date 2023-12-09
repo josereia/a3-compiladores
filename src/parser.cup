@@ -1,60 +1,123 @@
 import java_cup.runtime.*;
+import java.util.Stack;
 
 parser code
 {:
+	IFactory factory;
+	Stack<Object> stack = new Stack<Object>();
+
+	public Parser(Scanner scanner, IFactory factory) {
+		this(scanner);
+		this.factory = factory;
+	}
+
 	public void newError(int line, int column, String text) {
 		Lexer lexer = (Lexer) this.getScanner();
 		lexer.newError(line, column, text);
 	}
+
+	public void newError(int line, int column) {
+		Lexer lexer = (Lexer) this.getScanner();
+		lexer.newError(line, column);
+	}
+
+	public void newError(String text) {
+		Lexer lexer = (Lexer) this.getScanner();
+		lexer.newError(text);
+	}
+
+	public void syntax_error(Symbol sym) {
+		this.newError(sym.left, sym.right);
+	}
 :};
 
-terminal COLON, SEMICOLON;
+terminal SEMICOLON;
 terminal PLUS, MINUS, TIMES, SLASH;
-terminal EQUAL, EQUALTO, LESS, LESSEQUAL, GREATER, GREATEREQUAL, NOTEQUAL;
-terminal LEFTPAR, RIGHTPAR, LEFTBRACE, RIGHTBRACE, LEFTBRACKET, RIGHTBRACKET;
-terminal STRVAR, INTVAR, FUNC;
-terminal VOID, RETURN;
+terminal EQUAL;
+terminal LEFTPAR, RIGHTPAR, LEFTBRACE, RIGHTBRACE;
+terminal STRVAR, INTVAR, VOID, RETURN, PRINT;
 
 terminal Integer INTEGER;
 terminal String STRING, IDENTIFIER;
 
 non terminal Integer expr, term, factor;
 non terminal Object expr_list, expr_semicolon;
-non terminal Object var, return, args, func;
+non terminal Object var, return, args, func, print;
 
 expr_list ::= expr_list expr_semicolon
-						| expr_semicolon;
+						| expr_semicolon {:
+							if (!stack.empty()) {
+								Object result = stack.pop();
+								RESULT = result;
+							}
+						:};
 
-expr_semicolon ::= var:v SEMICOLON {: System.out.println(v); :} | func SEMICOLON;
+expr_semicolon ::= var SEMICOLON 
+									| func SEMICOLON
+									| print SEMICOLON
+									| error:e {: newError("Sintaxe incorreta!"); :};
+									
+expr ::= expr PLUS term {: 
+					IExpression e1 = (IExpression) stack.pop();
+					IExpression e2 = (IExpression) stack.pop();
+					IOperation op = factory.createBinaryOp(Sym.PLUS, e1, e2);
 
-expr ::= expr:e PLUS term:t {: RESULT = e+t; :}
-				| expr:e MINUS term:t {: RESULT = e-t; :}
-				| term:t {: RESULT = t; :};
-
-term ::= factor:f TIMES term:t {: RESULT = f*t; :}
-				| factor:f SLASH term:t {: 
-					if (t == 0) {
-						newError(tleft, tright, "Divisão por zero");
-					} else {
-						RESULT = f/t;
-					}
+					stack.push(op);
 				:}
-				| factor:f {: RESULT = f; :};
+				| expr MINUS term {:
+					IExpression e1 = (IExpression) stack.pop();
+					IExpression e2 = (IExpression) stack.pop();
+					IOperation op = factory.createBinaryOp(Sym.MINUS, e1, e2);
 
-factor ::= INTEGER:i {: RESULT = i; :}
-				| LEFTPAR expr:e RIGHTPAR {: RESULT = e; :};
+					stack.push(op);
+				:}
+				| term:t;
 
-var ::= STRVAR IDENTIFIER:i EQUAL STRING:s {: RESULT = s; :}
-			| INTVAR IDENTIFIER:i EQUAL expr:e {: RESULT = e; :}
-			| STRVAR IDENTIFIER:i
-			| INTVAR IDENTIFIER:i;
+term ::= factor TIMES term {:
+					IExpression e1 = (IExpression) stack.pop();
+					IExpression e2 = (IExpression) stack.pop();
+					IOperation op = factory.createBinaryOp(Sym.TIMES, e1, e2);
 
-return ::= RETURN IDENTIFIER:i SEMICOLON
+					stack.push(op);
+				:}
+				| factor SLASH term {:
+					IExpression e1 = (IExpression) stack.pop();
+					IExpression e2 = (IExpression) stack.pop();
+					IOperation op = factory.createBinaryOp(Sym.SLASH, e1, e2);
+
+					stack.push(op);
+				:}
+				| factor;
+
+factor ::= INTEGER:i {:
+					IExpression value = factory.createInteger(i);
+					stack.push(value);
+				:}
+				| LEFTPAR expr RIGHTPAR;
+
+var ::= STRVAR IDENTIFIER EQUAL STRING
+			| INTVAR IDENTIFIER EQUAL expr
+			| STRVAR IDENTIFIER
+			| INTVAR IDENTIFIER
+			| error {: newError("Sintaxe da variável incorreta!"); :};
+
+return ::= RETURN IDENTIFIER SEMICOLON
 			| RETURN STRING SEMICOLON
 			| RETURN INTEGER SEMICOLON;
 
 args ::= LEFTPAR var RIGHTPAR;
-func ::= IDENTIFIER:i args | IDENTIFIER:i LEFTPAR RIGHTPAR;
+func ::= IDENTIFIER args | IDENTIFIER LEFTPAR RIGHTPAR;
 func ::= VOID func LEFTBRACE expr_list RIGHTBRACE
 			| STRVAR func LEFTBRACE expr_list return RIGHTBRACE
 			| INTVAR func LEFTBRACE expr_list return RIGHTBRACE;
+
+print ::= PRINT LEFTPAR IDENTIFIER RIGHTPAR
+				| PRINT LEFTPAR STRING:s RIGHTPAR {:
+					IPrint print = factory.createPrint(s, null, null);
+					stack.push(print);
+				:}
+				| PRINT LEFTPAR expr RIGHTPAR {: 
+					IExpression e = (IExpression) stack.pop();
+					IPrint print = factory.createPrint(null, e, null);
+					stack.push(print);
+				:};

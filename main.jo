@@ -6,6 +6,8 @@ string aa() {
   return c;
 };
 
-void@ bb(string d) {
+void bb(string d) {
   string e = "e";
 };
+
+print("aaa");

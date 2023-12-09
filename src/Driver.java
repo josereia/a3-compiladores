@@ -3,12 +3,28 @@ import java.io.FileReader;
 
 public class Driver {
   static public void main(String argv[]) {
+    IFactory factory = new Factory();
     ErrorStack errorStack = new ErrorStack();
 
     try {
       Scanner scanner = new Lexer(new FileReader("main.jo"), errorStack);
-      Parser parser = new Parser(scanner);
-      parser.parse();
+      Parser parser = new Parser(scanner, factory);
+
+      Object obj = parser.parse().value;
+      if (obj != null) {
+        IVisitor visitor = new Visitor();
+
+        if (obj instanceof IExpression) {
+          IExpression expr = (IExpression) obj;
+          expr.accept(visitor);
+        } else if (obj instanceof IPrint) {
+          IPrint print = (IPrint) obj;
+          print.accept(visitor);
+        } else if (obj instanceof IIDent) {
+          IIDent ident = (IIDent) obj;
+          ident.accept(visitor);
+        }
+      }
 
       if (errorStack.hasErrors()) {
         int length = errorStack.errors.size();

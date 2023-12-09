@@ -24,6 +24,14 @@ import java_cup.runtime.*;
     this.errorStack.wrap(line, column, text);
   }
 
+  public void newError(int line, int column) {
+    this.errorStack.wrap(line, column);
+  }
+
+  public void newError(String text) {
+    this.errorStack.wrap(text);
+  }
+
   private Symbol createSym(int code, Object value) {
     return new Symbol(code, yyline, yycolumn, value);
   }
@@ -36,20 +44,21 @@ import java_cup.runtime.*;
 // sets
 numbers = [0-9]
 letters = [A-Za-z]
-symbols = ["/^$.*+?()[]{}|"]
+symbols = ["/^$.*+?()[]{}|!#@&-_=ªº°,;~`´'<>"]
 
 // rules
-integer = ({numbers})+
-string = \"({letters}|{integer}|{symbols})*\"
-identifier = {letters} ({letters}|{integer})*
-
 newLine = \r | \n | \r\n
 comment = "//".* | "/*"[^*]*|[*]*"*/"
 blanks = [ \t\f] | {newLine} | {comment}
 
+integer = ({numbers})+
+string = \"({letters}|{integer}|{symbols}|{blanks})*\"
+identifier = {letters} ({letters}|{integer})*
+
+
 %%
 ";"           {return createSym(Sym.SEMICOLON);}
-","           {return createSym(Sym.COLON);}
+// ","           {return createSym(Sym.COLON);}
 
 "+"           {return createSym(Sym.PLUS);}
 "-"           {return createSym(Sym.MINUS);}
@@ -57,25 +66,25 @@ blanks = [ \t\f] | {newLine} | {comment}
 "/"           {return createSym(Sym.SLASH);}
 
 "="           {return createSym(Sym.EQUAL);}
-"=="          {return createSym(Sym.EQUALTO);}
-"<"           {return createSym(Sym.LESS);}
-"<="          {return createSym(Sym.LESSEQUAL);}
-">"           {return createSym(Sym.GREATER);}
-">="          {return createSym(Sym.GREATEREQUAL);}
-"!="          {return createSym(Sym.NOTEQUAL);}
+// "=="          {return createSym(Sym.EQUALTO);}
+// "<"           {return createSym(Sym.LESS);}
+// "<="          {return createSym(Sym.LESSEQUAL);}
+// ">"           {return createSym(Sym.GREATER);}
+// ">="          {return createSym(Sym.GREATEREQUAL);}
+// "!="          {return createSym(Sym.NOTEQUAL);}
 
 "("           {return createSym(Sym.LEFTPAR);}
 ")"           {return createSym(Sym.RIGHTPAR);}
 "{"           {return createSym(Sym.LEFTBRACE);}
 "}"           {return createSym(Sym.RIGHTBRACE);}
-"["           {return createSym(Sym.LEFTBRACKET);}
-"]"           {return createSym(Sym.RIGHTBRACKET);}
+// "["           {return createSym(Sym.LEFTBRACKET);}
+// "]"           {return createSym(Sym.RIGHTBRACKET);}
 
 "string"      {return createSym(Sym.STRVAR);}
 "int"         {return createSym(Sym.INTVAR);}
-"func"        {return createSym(Sym.FUNC);}
 "void"        {return createSym(Sym.VOID);}
 "return"      {return createSym(Sym.RETURN);}
+"print"       {return createSym(Sym.PRINT);}
 
 {integer}     {
                 int value = Integer.parseInt(yytext());
@@ -86,5 +95,5 @@ blanks = [ \t\f] | {newLine} | {comment}
 {identifier}  {return createSym(Sym.IDENTIFIER);}
 
 {blanks}      {}
-.|\n          {newError(yyline, yycolumn, "Símbolo desconhecido: " + yytext());}
 <<EOF>>       {return createSym(Sym.EOF, yytext());}
+.|\n          {newError(yyline, yycolumn, "Símbolo desconhecido: " + yytext());}
